@@ -1,0 +1,1 @@
+add_library(ezsat STATIC ezsat.cc ezminisat.cc ../minisat/Options.cc ../minisat/SimpSolver.cc ../minisat/Solver.cc ../minisat/System.cc)
