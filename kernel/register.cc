@@ -307,8 +307,6 @@ void Pass::call(RTLIL::Design *design, std::vector<std::string> args)
 		log("\n");
 	}
 
-	std::println(std::cout, "{}", pass_register.size());
-
 	if (pass_register.count(args[0]) == 0)
 		log_cmd_error("No such command: %s (type 'help' for a command overview)\n", args[0].c_str());
 
