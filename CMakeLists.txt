@@ -39,7 +39,10 @@ add_subdirectory(libs/bigint)
 add_subdirectory(libs/sha1)
 
 add_library(yosys_verilog STATIC ${yosys_files} ${BISON_verilog_parser_OUTPUTS} ${FLEX_verilog_lexer_OUTPUTS})
-target_include_directories(yosys_verilog PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
+target_include_directories(yosys_verilog PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+        PRIVATE ${CMAKE_CURRENT_BINARY_DIR}
+)
 target_link_libraries(yosys_verilog PUBLIC ezsat json11 bigint sha1)
 
 add_executable(main main.cpp ${yosys_passes})
@@ -57,11 +60,8 @@ install(FILES
         ${CMAKE_CURRENT_BINARY_DIR}/yosys_verilog-config.cmake
         ${CMAKE_CURRENT_BINARY_DIR}/yosys_verilog-config-version.cmake
         DESTINATION ${CMAKE_INSTALL_DATADIR}/yosys_verilog)
-install(TARGETS yosys_verilog EXPORT yosys_verilog-targets)
-install(DIRECTORY include/
-        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
-        FILES_MATCHING PATTERN "*.hpp")
-install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/include/
+install(TARGETS yosys_verilog ezsat json11 bigint sha1 EXPORT yosys_verilog-targets)
+install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
         DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
         FILES_MATCHING
         PATTERN "*.hpp"
