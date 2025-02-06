@@ -12,15 +12,17 @@ include(CMakePackageConfigHelpers)
 include(GNUInstallDirs)
 include(FetchContent)
 
-if(WIN32)
-    FetchContent_Declare(win_flex_bison
-            URL https://github.com/lexxmark/winflexbison/releases/download/v2.5.25/win_flex_bison-2.5.25.zip
-            URL_MD5 720226b1befe7033fb3ecc98f5ffd425
-            DOWNLOAD_EXTRACT_TIMESTAMP TRUE
-    )
-    FetchContent_MakeAvailable(win_flex_bison)
-    LIST(APPEND CMAKE_PROGRAM_PATH "${win_flex_bison_SOURCE_DIR}")
-endif()
+find_program(BISON "bison")
+
+#if(WIN32)
+#    FetchContent_Declare(win_flex_bison
+#            URL https://github.com/lexxmark/winflexbison/releases/download/v2.5.25/win_flex_bison-2.5.25.zip
+#            URL_MD5 720226b1befe7033fb3ecc98f5ffd425
+#            DOWNLOAD_EXTRACT_TIMESTAMP TRUE
+#    )
+#    FetchContent_MakeAvailable(win_flex_bison)
+#    LIST(APPEND CMAKE_PROGRAM_PATH "${win_flex_bison_SOURCE_DIR}")
+#endif()
 
 find_package(BISON)
 find_package(FLEX)
