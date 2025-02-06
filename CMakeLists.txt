@@ -1,16 +1,26 @@
 cmake_minimum_required(VERSION 3.30)
-project(yosys_verilog)
+set(yosys_verilog_VERSION 0.49.21)
+project(yosys_verilog
+        VERSION ${yosys_verilog_VERSION}
+        DESCRIPTION "A trimmed down version of Yosys (https://github.com/YosysHQ/yosys) easily usable in CMake projects."
+        HOMEPAGE_URL "https://github.com/gian21391/yosys_verilog"
+        LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 23)
 
-if (CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
-    if (NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/libs/win_flex_bison)
-        message(FATAL_ERROR "WinFlexBison not installed properly. Read the README.md file for instructions.")
-    endif ()
+include(CMakePackageConfigHelpers)
+include(GNUInstallDirs)
+include(FetchContent)
 
-    LIST(APPEND CMAKE_PROGRAM_PATH "${CMAKE_CURRENT_SOURCE_DIR}/libs/win_flex_bison")
-    include_directories(${CMAKE_SOURCE_DIR}/thirdparty/win_flex_bison)
-endif ()
+if(WIN32)
+    FetchContent_Declare(win_flex_bison
+            URL https://github.com/lexxmark/winflexbison/releases/download/v2.5.25/win_flex_bison-2.5.25.zip
+            URL_MD5 720226b1befe7033fb3ecc98f5ffd425
+            DOWNLOAD_EXTRACT_TIMESTAMP TRUE
+    )
+    FetchContent_MakeAvailable(win_flex_bison)
+    LIST(APPEND CMAKE_PROGRAM_PATH "${win_flex_bison_SOURCE_DIR}")
+endif()
 
 find_package(BISON)
 find_package(FLEX)
@@ -32,3 +42,12 @@ target_link_libraries(yosys_verilog PUBLIC ezsat json11 bigint sha1)
 
 add_executable(main main.cpp ${yosys_passes})
 target_link_libraries(main PUBLIC yosys_verilog)
+
+configure_package_config_file(cmake/config.cmake.in
+        ${CMAKE_CURRENT_BINARY_DIR}/yosys_verilog-config.cmake
+        INSTALL_DESTINATION ${CMAKE_INSTALL_DATADIR}/yosys_verilog
+        NO_SET_AND_CHECK_MACRO)
+write_basic_package_version_file(
+        ${CMAKE_CURRENT_BINARY_DIR}/yosys_verilog-config-version.cmake
+        VERSION ${yosys_verilog_VERSION}
+        COMPATIBILITY SameMajorVersion)

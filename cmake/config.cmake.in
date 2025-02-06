@@ -1,0 +1,4 @@
+@PACKAGE_INIT@
+
+include(${CMAKE_CURRENT_LIST_DIR}/yosys_verilog-targets.cmake)
+check_required_components(yosys_verilog)
