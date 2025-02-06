@@ -53,3 +53,20 @@ write_basic_package_version_file(
         ${CMAKE_CURRENT_BINARY_DIR}/yosys_verilog-config-version.cmake
         VERSION ${yosys_verilog_VERSION}
         COMPATIBILITY SameMajorVersion)
+install(FILES
+        ${CMAKE_CURRENT_BINARY_DIR}/yosys_verilog-config.cmake
+        ${CMAKE_CURRENT_BINARY_DIR}/yosys_verilog-config-version.cmake
+        DESTINATION ${CMAKE_INSTALL_DATADIR}/yosys_verilog)
+install(TARGETS yosys_verilog EXPORT yosys_verilog-targets)
+install(DIRECTORY include/
+        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+        FILES_MATCHING PATTERN "*.hpp")
+install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/include/
+        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+        FILES_MATCHING
+        PATTERN "*.hpp"
+        PATTERN "*.h"
+        PATTERN "CMakeFiles" EXCLUDE)
+install(EXPORT yosys_verilog-targets
+        NAMESPACE yosys_verilog::
+        DESTINATION ${CMAKE_INSTALL_DATADIR}/yosys_verilog)
