@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.30)
-set(yosys_verilog_VERSION 0.49.21)
-project(yosys_verilog
-        VERSION ${yosys_verilog_VERSION}
+set(yosys-verilog_VERSION 0.49.21)
+project(yosys-verilog
+        VERSION ${yosys-verilog_VERSION}
         DESCRIPTION "A trimmed down version of Yosys (https://github.com/YosysHQ/yosys) easily usable in CMake projects."
         HOMEPAGE_URL "https://github.com/gian21391/yosys_verilog"
         LANGUAGES CXX)
@@ -38,35 +38,35 @@ add_subdirectory(libs/json11)
 add_subdirectory(libs/bigint)
 add_subdirectory(libs/sha1)
 
-add_library(yosys_verilog STATIC ${yosys_files} ${BISON_verilog_parser_OUTPUTS} ${FLEX_verilog_lexer_OUTPUTS})
-target_include_directories(yosys_verilog PUBLIC
+add_library(yosys-verilog STATIC ${yosys_files} ${BISON_verilog_parser_OUTPUTS} ${FLEX_verilog_lexer_OUTPUTS})
+target_include_directories(yosys-verilog PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
         PRIVATE ${CMAKE_CURRENT_BINARY_DIR}
 )
-target_link_libraries(yosys_verilog PUBLIC ezsat json11 bigint sha1)
+target_link_libraries(yosys-verilog PUBLIC ezsat json11 bigint sha1)
 
 add_executable(main main.cpp ${yosys_passes})
-target_link_libraries(main PUBLIC yosys_verilog)
+target_link_libraries(main PUBLIC yosys-verilog)
 
 configure_package_config_file(cmake/config.cmake.in
-        ${CMAKE_CURRENT_BINARY_DIR}/yosys_verilog-config.cmake
-        INSTALL_DESTINATION ${CMAKE_INSTALL_DATADIR}/yosys_verilog
+        ${CMAKE_CURRENT_BINARY_DIR}/yosys-verilog-config.cmake
+        INSTALL_DESTINATION ${CMAKE_INSTALL_DATADIR}/yosys-verilog
         NO_SET_AND_CHECK_MACRO)
 write_basic_package_version_file(
-        ${CMAKE_CURRENT_BINARY_DIR}/yosys_verilog-config-version.cmake
-        VERSION ${yosys_verilog_VERSION}
+        ${CMAKE_CURRENT_BINARY_DIR}/yosys-verilog-config-version.cmake
+        VERSION ${yosys-verilog_VERSION}
         COMPATIBILITY SameMajorVersion)
 install(FILES
-        ${CMAKE_CURRENT_BINARY_DIR}/yosys_verilog-config.cmake
-        ${CMAKE_CURRENT_BINARY_DIR}/yosys_verilog-config-version.cmake
-        DESTINATION ${CMAKE_INSTALL_DATADIR}/yosys_verilog)
-install(TARGETS yosys_verilog ezsat json11 bigint sha1 EXPORT yosys_verilog-targets)
+        ${CMAKE_CURRENT_BINARY_DIR}/yosys-verilog-config.cmake
+        ${CMAKE_CURRENT_BINARY_DIR}/yosys-verilog-config-version.cmake
+        DESTINATION ${CMAKE_INSTALL_DATADIR}/yosys-verilog)
+install(TARGETS yosys-verilog ezsat json11 bigint sha1 EXPORT yosys-verilog-targets)
 install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
         DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
         FILES_MATCHING
         PATTERN "*.hpp"
         PATTERN "*.h"
         PATTERN "CMakeFiles" EXCLUDE)
-install(EXPORT yosys_verilog-targets
-        NAMESPACE yosys_verilog::
-        DESTINATION ${CMAKE_INSTALL_DATADIR}/yosys_verilog)
+install(EXPORT yosys-verilog-targets
+        NAMESPACE yosys-verilog::
+        DESTINATION ${CMAKE_INSTALL_DATADIR}/yosys-verilog)
