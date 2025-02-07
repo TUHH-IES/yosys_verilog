@@ -62,7 +62,7 @@ install(FILES
         DESTINATION ${CMAKE_INSTALL_DATADIR}/yosys-verilog)
 install(TARGETS yosys-verilog ezsat json11 bigint sha1 EXPORT yosys_verilog-targets)
 install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yosys-verilog
         FILES_MATCHING
         PATTERN "*.hpp"
         PATTERN "*.h"
