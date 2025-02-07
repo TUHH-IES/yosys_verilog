@@ -61,16 +61,23 @@ install(FILES
         ${CMAKE_CURRENT_BINARY_DIR}/yosys-verilog-config-version.cmake
         DESTINATION ${CMAKE_INSTALL_DATADIR}/yosys-verilog)
 install(TARGETS yosys-verilog ezsat json11 bigint sha1 EXPORT yosys_verilog-targets)
-install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/kernel
+        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yosys-verilog
+        FILES_MATCHING
+        PATTERN "*.h")
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/backends
+        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yosys-verilog
+        FILES_MATCHING
+        PATTERN "*.h")
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/frontends
+        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yosys-verilog
+        FILES_MATCHING
+        PATTERN "*.h")
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/libs
         DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/yosys-verilog
         FILES_MATCHING
         PATTERN "*.hpp"
         PATTERN "*.h"
-        PATTERN "CMakeFiles" EXCLUDE
-        PATTERN "backends/json" EXCLUDE
-        PATTERN "cmake" EXCLUDE
-        PATTERN "passes" EXCLUDE
-        PATTERN "techlibs" EXCLUDE
         PATTERN "libs/bigint" EXCLUDE)
 install(EXPORT yosys_verilog-targets
         NAMESPACE yosys-verilog::
