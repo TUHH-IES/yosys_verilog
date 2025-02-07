@@ -68,6 +68,11 @@ install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
         PATTERN "*.h"
         PATTERN "CMakeFiles" EXCLUDE
         PATTERN "backends/json" EXCLUDE
+        PATTERN "cmake" EXCLUDE
+        PATTERN "passes/cmds" EXCLUDE
+        PATTERN "passes/opt" EXCLUDE
+        PATTERN "passes/proc" EXCLUDE
+        PATTERN "techlibs/common" EXCLUDE
         PATTERN "libs/bigint" EXCLUDE)
 install(EXPORT yosys-verilog-targets
         NAMESPACE yosys-verilog::
