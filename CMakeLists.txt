@@ -83,12 +83,12 @@ install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/libs
         PATTERN "*.hpp"
         PATTERN "*.h"
         PATTERN "libs/bigint" EXCLUDE)
-install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/backends
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/backends/json
         DESTINATION ${CMAKE_INSTALL_DATADIR}/yosys-verilog/sources/backends
         FILES_MATCHING
         PATTERN "*.cc")
 install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/passes
-        DESTINATION ${CMAKE_INSTALL_DATADIR}/yosys-verilog/sources/passes
+        DESTINATION ${CMAKE_INSTALL_DATADIR}/yosys-verilog/sources
         FILES_MATCHING
         PATTERN "*.cc")
 install(EXPORT yosys_verilog-targets
