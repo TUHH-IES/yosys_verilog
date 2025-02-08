@@ -6,8 +6,6 @@ project(yosys-verilog
         HOMEPAGE_URL "https://github.com/gian21391/yosys_verilog"
         LANGUAGES CXX)
 
-set(CMAKE_CXX_STANDARD 23)
-
 include(CMakePackageConfigHelpers)
 include(GNUInstallDirs)
 include(FetchContent)
@@ -45,6 +43,7 @@ target_include_directories(yosys-verilog PUBLIC
         PRIVATE ${CMAKE_CURRENT_BINARY_DIR}
 )
 target_link_libraries(yosys-verilog PUBLIC ezsat json11 bigint sha1)
+target_compile_features(yosys-verilog PUBLIC cxx_std_20)
 
 add_executable(main main.cpp)
 target_link_libraries(main PRIVATE yosys-verilog)
