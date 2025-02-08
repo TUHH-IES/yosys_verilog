@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.30)
+cmake_minimum_required(VERSION 3.26)
 set(yosys-verilog_VERSION 0.49.21)
 project(yosys-verilog
         VERSION ${yosys-verilog_VERSION}
@@ -12,20 +12,21 @@ include(CMakePackageConfigHelpers)
 include(GNUInstallDirs)
 include(FetchContent)
 
-find_program(BISON "bison")
+if(WIN32)
+    find_package(BISON)
+    if(NOT BISON_FOUND)
+        FetchContent_Declare(win_flex_bison
+                URL https://github.com/lexxmark/winflexbison/releases/download/v2.5.25/win_flex_bison-2.5.25.zip
+                URL_MD5 720226b1befe7033fb3ecc98f5ffd425
+                DOWNLOAD_EXTRACT_TIMESTAMP TRUE
+        )
+        FetchContent_MakeAvailable(win_flex_bison)
+        LIST(APPEND CMAKE_PROGRAM_PATH "${win_flex_bison_SOURCE_DIR}")
+    endif ()
+endif ()
 
-#if(WIN32)
-#    FetchContent_Declare(win_flex_bison
-#            URL https://github.com/lexxmark/winflexbison/releases/download/v2.5.25/win_flex_bison-2.5.25.zip
-#            URL_MD5 720226b1befe7033fb3ecc98f5ffd425
-#            DOWNLOAD_EXTRACT_TIMESTAMP TRUE
-#    )
-#    FetchContent_MakeAvailable(win_flex_bison)
-#    LIST(APPEND CMAKE_PROGRAM_PATH "${win_flex_bison_SOURCE_DIR}")
-#endif()
-
-find_package(BISON)
-find_package(FLEX)
+find_package(BISON REQUIRED)
+find_package(FLEX REQUIRED)
 BISON_TARGET(verilog_parser ${CMAKE_CURRENT_SOURCE_DIR}/frontends/verilog/verilog_parser.y ${CMAKE_CURRENT_BINARY_DIR}/frontends/verilog/verilog_parser.tab.cc COMPILE_FLAGS "-d -r all")
 FLEX_TARGET(verilog_lexer ${CMAKE_CURRENT_SOURCE_DIR}/frontends/verilog/verilog_lexer.l  ${CMAKE_CURRENT_BINARY_DIR}/frontends/verilog/verilog_lexer.cc)
 ADD_FLEX_BISON_DEPENDENCY(verilog_lexer verilog_parser)
@@ -59,8 +60,7 @@ install(FILES
         ${CMAKE_CURRENT_BINARY_DIR}/yosys-verilog-config.cmake
         ${CMAKE_CURRENT_BINARY_DIR}/yosys-verilog-config-version.cmake
         DESTINATION ${CMAKE_INSTALL_DATADIR}/yosys-verilog)
-install(TARGETS yosys-verilog ezsat json11 bigint sha1 EXPORT yosys_verilog-targets
-        OBJECTS DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/obj)
+install(TARGETS yosys-verilog ezsat json11 bigint sha1 EXPORT yosys_verilog-targets)
 install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/kernel
         DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
         FILES_MATCHING
@@ -84,3 +84,4 @@ install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/libs
 install(EXPORT yosys_verilog-targets
         NAMESPACE yosys-verilog::
         DESTINATION ${CMAKE_INSTALL_DATADIR}/yosys-verilog)
+install(FILES $<TARGET_OBJECTS:yosys-verilog> DESTINATION ${CMAKE_INSTALL_DATADIR}/yosys-verilog/obj)
