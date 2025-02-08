@@ -31,7 +31,6 @@ FLEX_TARGET(verilog_lexer ${CMAKE_CURRENT_SOURCE_DIR}/frontends/verilog/verilog_
 ADD_FLEX_BISON_DEPENDENCY(verilog_lexer verilog_parser)
 
 file(GLOB_RECURSE yosys_files RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} kernel/*.cc frontends/*.cc backends/*.cc passes/*.cc)
-file(GLOB_RECURSE yosys_passes RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} passes/*.cc backends/*.cc)
 
 add_subdirectory(libs/ezsat)
 add_subdirectory(libs/json11)
@@ -45,7 +44,7 @@ target_include_directories(yosys-verilog PUBLIC
 )
 target_link_libraries(yosys-verilog PUBLIC ezsat json11 bigint sha1)
 
-add_executable(main main.cpp ${yosys_passes})
+add_executable(main main.cpp $<TARGET_OBJECTS:yosys-verilog>)
 target_link_libraries(main PUBLIC yosys-verilog)
 
 configure_package_config_file(cmake/config.cmake.in
@@ -60,7 +59,8 @@ install(FILES
         ${CMAKE_CURRENT_BINARY_DIR}/yosys-verilog-config.cmake
         ${CMAKE_CURRENT_BINARY_DIR}/yosys-verilog-config-version.cmake
         DESTINATION ${CMAKE_INSTALL_DATADIR}/yosys-verilog)
-install(TARGETS yosys-verilog ezsat json11 bigint sha1 EXPORT yosys_verilog-targets)
+install(TARGETS yosys-verilog ezsat json11 bigint sha1 EXPORT yosys_verilog-targets
+        OBJECTS DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/obj)
 install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/kernel
         DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
         FILES_MATCHING
