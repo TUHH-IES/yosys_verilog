@@ -68,7 +68,7 @@ install(FILES
         ${CMAKE_CURRENT_BINARY_DIR}/yosys-verilog-config.cmake
         ${CMAKE_CURRENT_BINARY_DIR}/yosys-verilog-config-version.cmake
         DESTINATION ${CMAKE_INSTALL_DATADIR}/yosys-verilog)
-install(TARGETS yosys-verilog ezsat json11 bigint sha1 EXPORT yosys_verilog-targets)
+install(TARGETS yosys-verilog yosys-passes ezsat json11 bigint sha1 EXPORT yosys_verilog-targets)
 install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/kernel
         DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
         FILES_MATCHING
