@@ -42,7 +42,10 @@ target_include_directories(yosys-passes PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
         $<INSTALL_INTERFACE:$<INSTALL_PREFIX>>
 )
-target_compile_features(yosys-passes PUBLIC cxx_std_20)
+target_compile_features(yosys-passes PRIVATE cxx_std_20)
+
+set(is_object_lib "$<STREQUAL:$<TARGET_PROPERTY:yosys-passes,TYPE>,OBJECT_LIBRARY>")
+list(APPEND object_files "$<${is_object_lib}:$<TARGET_OBJECTS:yosys-passes>>")
 
 add_library(yosys-verilog STATIC ${yosys_files} ${BISON_verilog_parser_OUTPUTS} ${FLEX_verilog_lexer_OUTPUTS})
 target_include_directories(yosys-verilog PUBLIC
@@ -50,11 +53,12 @@ target_include_directories(yosys-verilog PUBLIC
         $<INSTALL_INTERFACE:$<INSTALL_PREFIX>>
         PRIVATE ${CMAKE_CURRENT_BINARY_DIR}
 )
-target_link_libraries(yosys-verilog PUBLIC ezsat json11 bigint sha1 $<TARGET_OBJECTS:yosys-passes>)
-target_compile_features(yosys-verilog PUBLIC cxx_std_20)
+target_link_libraries(yosys-verilog PUBLIC ezsat json11 bigint sha1 ${object_files})
+target_compile_features(yosys-verilog PRIVATE cxx_std_20)
 
 add_executable(main main.cpp)
 target_link_libraries(main PRIVATE yosys-verilog)
+target_compile_features(main PRIVATE cxx_std_20)
 
 configure_package_config_file(cmake/config.cmake.in
         ${CMAKE_CURRENT_BINARY_DIR}/yosys-verilog-config.cmake
