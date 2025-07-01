@@ -3,7 +3,7 @@ set(yosys-verilog_VERSION 0.49.21)
 project(yosys-verilog
         VERSION ${yosys-verilog_VERSION}
         DESCRIPTION "A trimmed down version of Yosys (https://github.com/YosysHQ/yosys) easily usable in CMake projects."
-        HOMEPAGE_URL "https://github.com/gian21391/yosys_verilog"
+        HOMEPAGE_URL "https://github.com/TUHH-IES/yosys_verilog"
         LANGUAGES CXX)
 
 include(CMakePackageConfigHelpers)
