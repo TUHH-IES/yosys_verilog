@@ -40,7 +40,7 @@ add_subdirectory(libs/sha1)
 add_library(yosys-passes OBJECT ${yosys_passes})
 target_include_directories(yosys-passes PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
-        $<INSTALL_INTERFACE:$<INSTALL_PREFIX>>
+        $<INSTALL_INTERFACE:${CMAKE_INSTALL_DATADIR}/yosys-verilog>
 )
 target_compile_features(yosys-passes PRIVATE cxx_std_20)
 
@@ -50,7 +50,7 @@ list(APPEND object_files "$<${is_object_lib}:$<TARGET_OBJECTS:yosys-passes>>")
 add_library(yosys-verilog STATIC ${yosys_files} ${BISON_verilog_parser_OUTPUTS} ${FLEX_verilog_lexer_OUTPUTS})
 target_include_directories(yosys-verilog PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
-        $<INSTALL_INTERFACE:$<INSTALL_PREFIX>>
+        $<INSTALL_INTERFACE:${CMAKE_INSTALL_DATADIR}/yosys-verilog>
         PRIVATE ${CMAKE_CURRENT_BINARY_DIR}
 )
 target_link_libraries(yosys-verilog PUBLIC ezsat json11 bigint sha1 ${object_files})
